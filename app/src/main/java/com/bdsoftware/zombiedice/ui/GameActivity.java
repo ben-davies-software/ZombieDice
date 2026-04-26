@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bdsoftware.zombiedice.R;
+import com.bdsoftware.zombiedice.SoundManager;
 import com.bdsoftware.zombiedice.model.Die;
 import com.bdsoftware.zombiedice.viewmodel.GameViewModel;
 
@@ -37,6 +38,8 @@ public class GameActivity extends AppCompatActivity {
     private Button rollButton;
     private Button bankButton;
 
+    private SoundManager soundManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +47,8 @@ public class GameActivity extends AppCompatActivity {
 
         // Initialise ViewModel
         viewModel = new ViewModelProvider(this).get(GameViewModel.class);
+
+        soundManager = new SoundManager(this);
 
         // Bind views
         statusMessage = findViewById(R.id.statusMessage);
@@ -65,6 +70,10 @@ public class GameActivity extends AppCompatActivity {
             humanTurnInfo.setText("Brains: " + s[1] + "  Shotguns: " + s[2]);
             aiTotalScore.setText(String.valueOf(s[3]));
             aiTurnInfo.setText("Brains: " + s[4] + "  Shotguns: " + s[5]);
+            // Play shotgun sound if player has just busted
+            if (s[2] >= 3 || s[5] >= 3) {
+                soundManager.playShotgunBlast();
+            }
         });
 
         viewModel.getRolledDice().observe(this, dice -> {
@@ -87,6 +96,7 @@ public class GameActivity extends AppCompatActivity {
 
         // Button listeners
         rollButton.setOnClickListener(v -> {
+            soundManager.playDiceRoll();
             rollButton.setEnabled(false);
             bankButton.setEnabled(false);
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -97,7 +107,10 @@ public class GameActivity extends AppCompatActivity {
             }, 900);
             viewModel.rollDice();
         });
-        bankButton.setOnClickListener(v -> viewModel.bankBrains());
+        bankButton.setOnClickListener(v -> {
+            soundManager.playBrainCollect();
+            viewModel.bankBrains();
+        });
     }
 
     // Update the three dice ImageViews based on roll results
@@ -209,4 +222,10 @@ public class GameActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .show();
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        soundManager.release();
+    }
+
 }
