@@ -1,5 +1,8 @@
 package com.bdsoftware.zombiedice.ui;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,9 +14,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.zombiedice.R;
-import com.example.zombiedice.model.Die;
-import com.example.zombiedice.viewmodel.GameViewModel;
+import com.bdsoftware.zombiedice.R;
+import com.bdsoftware.zombiedice.model.Die;
+import com.bdsoftware.zombiedice.viewmodel.GameViewModel;
 
 import java.util.List;
 
@@ -65,7 +68,7 @@ public class GameActivity extends AppCompatActivity {
         });
 
         viewModel.getRolledDice().observe(this, dice -> {
-            updateDiceImages(dice);
+            animateAndUpdateDice(dice);
         });
 
         viewModel.getHumanTurnActive().observe(this, isHumanTurn -> {
@@ -83,7 +86,17 @@ public class GameActivity extends AppCompatActivity {
         });
 
         // Button listeners
-        rollButton.setOnClickListener(v -> viewModel.rollDice());
+        rollButton.setOnClickListener(v -> {
+            rollButton.setEnabled(false);
+            bankButton.setEnabled(false);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                if (viewModel.isHumanTurn()) {
+                    rollButton.setEnabled(true);
+                    bankButton.setEnabled(true);
+                }
+            }, 900);
+            viewModel.rollDice();
+        });
         bankButton.setOnClickListener(v -> viewModel.bankBrains());
     }
 
@@ -92,6 +105,41 @@ public class GameActivity extends AppCompatActivity {
         ImageView[] dieViews = {die1, die2, die3};
         for (int i = 0; i < dice.size(); i++) {
             dieViews[i].setImageResource(getDieDrawable(dice.get(i)));
+        }
+    }
+
+    private void animateAndUpdateDice(List<Die> dice) {
+        ImageView[] dieViews = {die1, die2, die3};
+        Animation rollAnim = AnimationUtils.loadAnimation(this, R.anim.dice_roll);
+
+        // Count how many dice we have this roll
+        int diceCount = dice.size();
+
+        for (int i = 0; i < 3; i++) {
+            if (i < diceCount) {
+                dieViews[i].setVisibility(android.view.View.VISIBLE);
+                final int index = i;
+                Animation anim = AnimationUtils.loadAnimation(this, R.anim.dice_roll);
+
+                // Update the image once the animation finishes
+                anim.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        dieViews[index].setImageResource(getDieDrawable(dice.get(index)));
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                });
+
+                dieViews[i].startAnimation(anim);
+            } else {
+                // Hide unused die slots
+                dieViews[i].setVisibility(android.view.View.INVISIBLE);
+            }
         }
     }
 

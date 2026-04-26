@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.zombiedice.model.Cup;
-import com.example.zombiedice.model.Die;
-import com.example.zombiedice.model.Player;
+import com.bdsoftware.zombiedice.model.Cup;
+import com.bdsoftware.zombiedice.model.Die;
+import com.bdsoftware.zombiedice.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;

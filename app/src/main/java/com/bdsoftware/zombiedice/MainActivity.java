@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
 
+import com.bdsoftware.zombiedice.ui.GameActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
