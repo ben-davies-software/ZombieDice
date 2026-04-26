@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#1a1a1a"
+    android:padding="32dp">
+
+    <TextView
+        android:id="@+id/victoryEmoji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🧟"
+        android:textSize="80sp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/victoryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VICTORY!"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:textColor="#7CFC00"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/victoryMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You collected 13 brains!"
+        android:textSize="20sp"
+        android:textColor="#ffffff"
+        android:gravity="center"
+        android:layout_marginBottom="32dp"/>
+
+    <!-- Score Summary -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#2a2a2a"
+        android:padding="16dp"
+        android:layout_marginBottom="48dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="YOU"
+                android:textColor="#7CFC00"
+                android:textStyle="bold"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/finalHumanScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="#ffffff"
+                android:textSize="36sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ZOMBIE AI"
+                android:textColor="#cc0000"
+                android:textStyle="bold"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/finalAiScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="#ffffff"
+                android:textSize="36sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/playAgainButton"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:text="PLAY AGAIN"
+        android:textSize="18sp"
+        android:backgroundTint="#7CFC00"
+        android:textColor="#1a1a1a"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/menuButton"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:text="MAIN MENU"
+        android:textSize="18sp"
+        android:backgroundTint="#cc0000"
+        android:textColor="#ffffff"/>
+
+</LinearLayout>

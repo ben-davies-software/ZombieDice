@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -18,6 +17,8 @@ import com.bdsoftware.zombiedice.R;
 import com.bdsoftware.zombiedice.SoundManager;
 import com.bdsoftware.zombiedice.model.Die;
 import com.bdsoftware.zombiedice.viewmodel.GameViewModel;
+
+import android.content.Intent;
 
 import java.util.List;
 
@@ -208,19 +209,17 @@ public class GameActivity extends AppCompatActivity {
 
     // Show a dialog when the game is won
     private void showWinnerDialog(String winner) {
-        String message = winner.equals("You") ?
-                "You collected 13 brains! You win!" :
-                "Zombie AI collected 13 brains! You lose!";
+        int humanScore = viewModel.getScores().getValue() != null ?
+                viewModel.getScores().getValue()[0] : 0;
+        int aiScore = viewModel.getScores().getValue() != null ?
+                viewModel.getScores().getValue()[3] : 0;
 
-        new AlertDialog.Builder(this)
-                .setTitle(winner.equals("You") ? "Victory!" : "Defeated!")
-                .setMessage(message)
-                .setPositiveButton("Play Again", (dialog, which) -> {
-                    viewModel.startNewGame();
-                })
-                .setNegativeButton("Quit", (dialog, which) -> finish())
-                .setCancelable(false)
-                .show();
+        Intent intent = new Intent(GameActivity.this, VictoryActivity.class);
+        intent.putExtra("winner", winner);
+        intent.putExtra("humanScore", humanScore);
+        intent.putExtra("aiScore", aiScore);
+        startActivity(intent);
+        finish();
     }
     @Override
     protected void onDestroy() {
